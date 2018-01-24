@@ -5,7 +5,7 @@ generation of a random maze
 clang++ -O3 -std=c++14 main.cpp Maze.cpp -o mazeGen
 
 # Usage
-mazeGen <height> <width> <outputfile>
+mazeGen \<height\> \<width\> \<outputfile\>
 
 # Output Example
 Input: mazeGen 10 15 maze.txt
