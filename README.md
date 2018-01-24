@@ -10,7 +10,7 @@ mazeGen <height> <width> <outputfile>
 # Output Example
 Input: mazeGen 10 15 maze.txt
 Output:
- 
+ ```
 21 31
 1 1
 19 29
@@ -35,4 +35,4 @@ Output:
 ███ █ █ █ █ █████ █ █ █ █ ███ █
 █   █ █ █   █       █ █       █
 ███████████████████████████████
-
+```
