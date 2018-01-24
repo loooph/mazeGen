@@ -1,7 +1,7 @@
 # mazeGen
 generation of a random maze
 
-# Compile Example
+# Compilation Example
 clang++ -O3 -std=c++14 main.cpp Maze.cpp -o mazeGen
 
 # Usage
