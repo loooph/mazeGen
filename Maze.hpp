@@ -36,6 +36,8 @@ public:
 private:
     /**
      * @brief elements pointing to a root node, they are connected to
+     * Each cell of the maze is represented by a node in the connectivity Tree.
+     * The root of the n-th node is the n-th value of the connectivity tree.
      */
     std::vector<unsigned int> connectivityTree;
 
@@ -59,7 +61,7 @@ private:
     void initGrid( unsigned int h, unsigned int w );
 
     /**
-     * @brief initializes components with a given size, each node will get their respective component
+     * @brief initializes the connectivity Tree with a given size, each node will get their respective component
      * @param h height, number of cells
      * @param w width, number of cells
      */
@@ -74,7 +76,7 @@ private:
 
     /**
      * @brief generates random maze on the current object
-     * Removes random walls until all cells are connected
+     * Generates random maze on the current object by removing random walls between unconnected cells until all cells are connected
      * @param h height, number of cells
      * @param w width, number of cells
      */
@@ -85,7 +87,7 @@ private:
      * @param c1 first cell
      * @param c2 second cell
      * @return true, if there exists a path from c1 to c2 or vise versa
-     * @post find will be called in the process
+     * @post findRoot() will be called in the process
      */
     bool isConnected(unsigned int c1, unsigned int c2);
 
@@ -109,7 +111,7 @@ private:
      * @return root of the node
      * @post c-th value of connectivityTree is equal to find( c )
      */
-    unsigned int find (unsigned int c);
+    unsigned int findRoot (unsigned int c);
 };
 
 

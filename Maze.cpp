@@ -92,12 +92,12 @@ void Maze::genMaze (unsigned int h, unsigned int w)
 
 bool Maze::isConnected (unsigned int c1, unsigned int c2)
 {
-    return this->find(c1 ) == this->find(c2 );
+    return this->findRoot(c1) == this->findRoot(c2);
 }
 
 void Maze::connectCells (unsigned int c1, unsigned int c2)
 {
-    this->connectivityTree.at( this->find( c2 ) ) = this->find( c1 );
+    this->connectivityTree.at(this->findRoot(c2) ) = this->findRoot(c1);
 }
 
 void Maze::buildGrid (unsigned int h, unsigned int w)
@@ -147,7 +147,7 @@ std::ostream &operator<< (std::ostream &out, const Maze &maze)
     return out;
 }
 
-unsigned int Maze::find ( unsigned int c )
+unsigned int Maze::findRoot (unsigned int c)
 {
     unsigned int root = c;
     while ( root != this->connectivityTree.at( root ) )
