@@ -35,9 +35,9 @@ public:
 
 private:
     /**
-     * @brief contains all connectivity components
+     * @brief elements pointing to a root node, they are connected to
      */
-    std::list<std::unordered_set<unsigned int>> components;
+    std::vector<unsigned int> connectivityTree;
 
     /**
      * @brief grid to print
@@ -63,7 +63,7 @@ private:
      * @param h height, number of cells
      * @param w width, number of cells
      */
-    void initComponents (unsigned int h, unsigned int w);
+    void initConnectivityTree (unsigned int h, unsigned int w);
 
     /**
      * @brief initializes walls with a given size,
@@ -85,15 +85,16 @@ private:
      * @param c1 first cell
      * @param c2 second cell
      * @return true, if there exists a path from c1 to c2 or vise versa
+     * @post find will be called in the process
      */
-    bool isConnected(unsigned int c1, unsigned int c2) const;
+    bool isConnected(unsigned int c1, unsigned int c2);
 
     /**
-     * @brief joins the components of 2 cells
+     * @brief joins the connectivity trees of 2 cells
      * @param c1 first cell
      * @param c2 second cell
      */
-    void joinComponents(unsigned int c1, unsigned int c2);
+    void connectCells (unsigned int c1, unsigned int c2);
 
     /**
      * @brief builds the grid of walls
@@ -101,6 +102,14 @@ private:
      * @param w width, number of cells
      */
     void buildGrid (unsigned int h, unsigned int w);
+
+    /**
+     * @brief finds the root of a node in the connectivity tree and lets the node point directly to the root
+     * @param c node to find the root of
+     * @return root of the node
+     * @post c-th value of connectivityTree is equal to find( c )
+     */
+    unsigned int find (unsigned int c);
 };
 
 

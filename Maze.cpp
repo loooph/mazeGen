@@ -7,7 +7,7 @@
 Maze::Maze (unsigned int h, unsigned int w)
 {
     this->initGrid(h, w);
-    this->initComponents(h, w);
+    this->initConnectivityTree(h, w);
     this->initWalls(h, w);
     this->genMaze(h, w);
     this->buildGrid(h, w);
@@ -32,12 +32,12 @@ void Maze::initGrid (unsigned int h, unsigned int w)
 
 }
 
-void Maze::initComponents (unsigned int h, unsigned int w)
+void Maze::initConnectivityTree (unsigned int h, unsigned int w)
 {
-    for ( unsigned int i = 0; i < h * w; ++i )
+    this->connectivityTree.resize( h * w );
+    for ( unsigned int i = 0; i < this->connectivityTree.size(); ++i )
     {
-        this->components.emplace_back( i );
-        this->components.back().insert( i );
+        this->connectivityTree.at( i ) = i;
     }
 }
 
@@ -51,8 +51,12 @@ void Maze::genMaze (unsigned int h, unsigned int w)
     srand(static_cast<unsigned int> ( time( nullptr ) ) );
 
     unsigned int c1, c2;
+    unsigned int i = 0;
 
-    while ( this->components.size() > 1 )
+    /**
+     * @brief h * w - 1 walls have to be removed between unconnected cells, so that every cell will be connected
+     */
+    while ( i < h * w - 1 )
     {
         unsigned int wall = static_cast<unsigned int> ( rand() ) % this->walls.size();
 
@@ -79,44 +83,21 @@ void Maze::genMaze (unsigned int h, unsigned int w)
             else
             {
                 this->walls.at( wall ) = false;
-                this->joinComponents(c1 , c2);
+                this->connectCells(c1, c2);
             }
         }
+        ++i;
     }
 }
 
-bool Maze::isConnected (unsigned int c1, unsigned int c2) const
+bool Maze::isConnected (unsigned int c1, unsigned int c2)
 {
-    for ( const auto& component: this->components )
-    {
-        if ( component.count( c1 ) && component.count( c2) )
-        {
-            return true;
-        }
-    }
-    return false;
+    return this->find(c1 ) == this->find(c2 );
 }
 
-void Maze::joinComponents (unsigned int c1, unsigned int c2)
+void Maze::connectCells (unsigned int c1, unsigned int c2)
 {
-    for ( auto& component1: this->components)
-    {
-        if ( component1.count( c1 ) )
-        {
-            for ( auto& component2: this->components )
-            {
-                if ( component2.count( c2 ) )
-                {
-                    for ( auto& cell: component2 )
-                    {
-                        component1.insert( cell );
-                    }
-                    components.remove( component2 );
-                    return;
-                }
-            }
-        }
-    }
+    this->connectivityTree.at( c2 ) = this->find( c1 );
 }
 
 void Maze::buildGrid (unsigned int h, unsigned int w)
@@ -164,4 +145,15 @@ std::ostream &operator<< (std::ostream &out, const Maze &maze)
         out << std::endl;
     }
     return out;
+}
+
+unsigned int Maze::find ( unsigned int c )
+{
+    unsigned int root = c;
+    while ( root != this->connectivityTree.at( root ) )
+    {
+        root = this->connectivityTree.at( root );
+    }
+    this->connectivityTree.at( c ) = root;
+    return root;
 }
