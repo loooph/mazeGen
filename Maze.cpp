@@ -97,7 +97,7 @@ bool Maze::isConnected (unsigned int c1, unsigned int c2)
 
 void Maze::connectCells (unsigned int c1, unsigned int c2)
 {
-    this->connectivityTree.at( c2 ) = this->find( c1 );
+    this->connectivityTree.at( this->find( c2 ) ) = this->find( c1 );
 }
 
 void Maze::buildGrid (unsigned int h, unsigned int w)
